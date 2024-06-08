@@ -1,4 +1,4 @@
-import type { Colour, Suit } from "./game-state";
+import type { Colour, Suit } from "./klondike";
 
 export function getSuitColour(suit: Suit): Colour {
   if (suit === "hearts" || suit === "diamonds") {
