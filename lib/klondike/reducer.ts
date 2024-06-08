@@ -15,8 +15,6 @@ export function klondikeReducer(
   draft: WritableDraft<KlondikeGameState>,
   action: AnyAction,
 ) {
-  console.debug({ action });
-
   if (action.kind === "newGame") {
     return newGame();
   }

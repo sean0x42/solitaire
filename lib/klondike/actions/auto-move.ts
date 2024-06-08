@@ -13,7 +13,7 @@ export function autoMove(
   draft: WritableDraft<KlondikeGameState>,
   action: AutoMoveAction,
 ) {
-  const card = peekCard(draft, action);
+  const { card, isLastInColumn } = peekCard(draft, action);
 
   // This can happen in dev mode because react fires actions twice
   if (card === undefined) {
@@ -22,25 +22,37 @@ export function autoMove(
     );
   }
 
-  getFirstValidMove(draft, card).map((move) =>
+  getFirstValidMove(draft, card, isLastInColumn).map((move) =>
     applyMove(draft, { ...move, ...action, kind: "move" }),
   );
 }
 
-function peekCard(
-  state: KlondikeGameState,
-  move: MoveFrom,
-): CardState | undefined {
+interface Peek {
+  card: CardState | undefined;
+  isLastInColumn: boolean;
+}
+
+function peekCard(state: KlondikeGameState, move: MoveFrom): Peek {
   if (move.from === "tableau") {
-    return state.tableau[move.fromColumnIndex].at(move.fromCardIndex);
+    return {
+      card: state.tableau[move.fromColumnIndex].at(move.fromCardIndex),
+      isLastInColumn:
+        move.fromCardIndex === state.tableau[move.fromColumnIndex].length - 1,
+    };
   }
 
   if (move.from === "wastePile") {
-    return state.wastePile.at(0);
+    return {
+      card: state.wastePile.at(0),
+      isLastInColumn: true,
+    };
   }
 
   if (move.from === "solvedPile") {
-    return state.solvedPiles[move.fromColumnIndex].at(move.fromCardIndex);
+    return {
+      card: state.solvedPiles[move.fromColumnIndex].at(move.fromCardIndex),
+      isLastInColumn: true,
+    };
   }
 
   throw new Error(`Invalid move: ${JSON.stringify(move)}`);
@@ -49,9 +61,10 @@ function peekCard(
 function getFirstValidMove(
   state: KlondikeGameState,
   card: CardState,
+  isLastInColumn: boolean,
 ): Option<MoveTo> {
   const moves: MoveTo[] = [
-    ...getMovesToSolvedPile(state, card),
+    ...getMovesToSolvedPile(state, card, isLastInColumn),
     ...getMovesToTableau(state, card),
   ];
 
@@ -62,8 +75,13 @@ function getFirstValidMove(
 function getMovesToSolvedPile(
   state: KlondikeGameState,
   card: CardState,
+  isLastCardInColumn: boolean,
 ): MoveTo[] {
   const moves: MoveTo[] = [];
+
+  if (!isLastCardInColumn) {
+    return moves;
+  }
 
   state.solvedPiles.forEach((column, toColumnIndex) => {
     // Aces can only go to empty solved piles
