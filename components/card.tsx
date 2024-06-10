@@ -47,17 +47,23 @@ export const Card: FC<CardProps> = ({
     <div
       {...divProps}
       className={twMerge(
-        "border-solid border-8 aspect-card rounded-lg z-10 relative p-2",
+        "aspect-card rounded-lg z-10 relative p-[10%] shadow-2xl",
         facing === "up"
-          ? "cursor-pointer bg-white border-black"
-          : "bg-green-800 border-white",
+          ? "cursor-pointer bg-white"
+          : "bg-green-800 border-solid border-8 border-white",
         colour === "red" && "text-red-500",
         className,
       )}
     >
       {facing === "up" && (
-        <p className="text-xl break-words leading-none">
+        <p className="text-[1.75vw] break-words leading-none">
           {formattedValue} {suitIcon}
+        </p>
+      )}
+
+      {facing === "up" && (
+        <p className="absolute left-0 right-0 text-[8vw] text-center">
+          {suitIcon}
         </p>
       )}
     </div>

@@ -17,25 +17,18 @@ export function klondikeReducer(
   draft: WritableDraft<KlondikeGameState>,
   action: AnyAction,
 ) {
-  if (action.kind === "newGame") {
-    return newGame();
+  switch (action.kind) {
+    case "newGame":
+      return newGame();
+    case "autoMove":
+      return autoMove(draft, action);
+    case "move":
+      return applyMove(draft, action);
+    case "deal":
+      return deal(draft);
+    case "recycleDeck":
+      return recycleDeck(draft);
+    default:
+      throw new Error(`Unknown action: ${JSON.stringify(action)}`);
   }
-
-  if (action.kind === "move") {
-    return applyMove(draft, action);
-  }
-
-  if (action.kind === "autoMove") {
-    return autoMove(draft, action);
-  }
-
-  if (action.kind === "deal") {
-    return deal(draft);
-  }
-
-  if (action.kind === "recycleDeck") {
-    return recycleDeck(draft);
-  }
-
-  throw new Error(`Unknown action: ${JSON.stringify(action)}`);
 }
