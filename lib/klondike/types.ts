@@ -6,6 +6,7 @@ export type Colour = "red" | "black";
 export type Facing = "up" | "down";
 
 export interface CardState {
+  id: number;
   value: number;
   suit: Suit;
   facing: Facing;
@@ -26,6 +27,7 @@ export type SolvedPiles = [CardState[], CardState[], CardState[], CardState[]];
 export interface KlondikeGameState {
   readonly stockPile: CardState[];
   readonly wastePile: CardState[];
+  readonly discardPile: CardState[];
   readonly tableau: Tableau;
   readonly solvedPiles: SolvedPiles;
 }

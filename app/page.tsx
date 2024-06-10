@@ -10,7 +10,7 @@ const Home: FC = () => (
   <GameStateProvider>
     <NewGameButton />
 
-    <main className="grid grid-cols-7 grid-rows-[auto_1fr] p-8 gap-6 bg-green-700">
+    <main className="grid grid-cols-7 grid-rows-[auto_1fr] p-8 gap-5 bg-green-700">
       <SolveSpace />
       <WastePile />
       <StockPile />

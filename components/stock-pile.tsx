@@ -7,7 +7,7 @@ import { useDispatch, useGameState } from "./game-state";
 export const StockPile: FC = () => {
   const dispatch = useDispatch();
 
-  const { stockPile } = useGameState();
+  const { stockPile, discardPile } = useGameState();
   const topCard = stockPile[stockPile.length - 1];
 
   return (
@@ -20,6 +20,15 @@ export const StockPile: FC = () => {
             dispatch({ kind: "deal" });
           }}
         />
+      )}
+
+      {stockPile.length === 0 && discardPile.length !== 0 && (
+        <button
+          className="w-full aspect-card bg-green-800 rounded-lg"
+          onMouseDown={() => dispatch({ kind: "recycleDeck" })}
+        >
+          Recycle
+        </button>
       )}
     </div>
   );

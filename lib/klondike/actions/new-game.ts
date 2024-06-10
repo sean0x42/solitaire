@@ -13,15 +13,17 @@ export interface NewGameAction {
 
 export function newGame(): KlondikeGameState {
   // 1. Generate deck
-  const allCards: CardState[] = [];
+  const deck: CardState[] = [];
+  let id = 0;
+
   for (let value = 1; value <= 13; value++) {
     for (const suit of suits) {
-      allCards.push({ value, suit, facing: "down" });
+      deck.push({ id: id++, value, suit, facing: "down" });
     }
   }
 
   // 2. Shuffle
-  shuffle(allCards);
+  shuffle(deck);
 
   // 3. Deal tableau
   const tableau: CardState[][] = [];
@@ -30,7 +32,7 @@ export function newGame(): KlondikeGameState {
     const column: CardState[] = [];
 
     for (let rowIdx = 0; rowIdx <= columnIdx; rowIdx++) {
-      const card = new Option(allCards.pop());
+      const card = new Option(deck.pop());
       column.push(card.unwrap());
 
       // Set the final card face up
@@ -43,9 +45,10 @@ export function newGame(): KlondikeGameState {
   }
 
   return {
-    stockPile: allCards,
+    stockPile: deck,
     tableau: tableau as Tableau,
     wastePile: [],
+    discardPile: [],
     solvedPiles: [[], [], [], []],
   };
 }

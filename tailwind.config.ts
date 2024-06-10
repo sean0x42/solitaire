@@ -6,7 +6,11 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      aspectRatio: {
+        card: "63/88",
+      },
+    },
   },
   plugins: [],
 };

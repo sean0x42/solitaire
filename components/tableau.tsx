@@ -11,11 +11,11 @@ export const Tableau: FC = () => {
   return (
     <div className="col-span-7 grid grid-cols-subgrid" suppressHydrationWarning>
       {tableau.map((column, columnIndex) => (
-        <ol key={columnIndex} className="grid grid-rows-[repeat(10,3vw)]">
+        <ol key={columnIndex} className="grid grid-rows-[repeat(15,3vw)]">
           {column.map((card, cardIndex) => (
             <Card
               {...card}
-              key={card.value + card.suit}
+              key={card.id}
               onMouseDown={() => {
                 if (card.facing === "down") return;
                 dispatch({

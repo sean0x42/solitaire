@@ -7,6 +7,8 @@ export const NewGameButton: FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <button onMouseDown={() => dispatch({ kind: "newGame" })}>New game</button>
+    <button className="p-2" onMouseDown={() => dispatch({ kind: "newGame" })}>
+      New game
+    </button>
   );
 };
